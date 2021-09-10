@@ -1,8 +1,9 @@
-Alice/__pycache__
-Alice/bits/__pycache__
-Alice/Handle/__pycache__
-Alice/Network/__pycache__
-Alice/Network/lib/__pycache__
-Alice/Panel/__pycache__
-Alice/Picture/__pycache__
-Alice/Pages/__pycache__
+src/Alice/__pycache__
+src/Alice/bits/__pycache__
+src/Alice/Handle/__pycache__
+src/Alice/Network/__pycache__
+src/Alice/Network/lib/__pycache__
+src/Alice/Panel/__pycache__
+src/Alice/Picture/__pycache__
+src/Pages/__pycache__
+.DS_Store
