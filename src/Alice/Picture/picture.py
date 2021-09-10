@@ -1,7 +1,4 @@
 from PIL import ImageTk, Image
-import numpy as np
-import cv2 as cv
-from matplotlib import pyplot as plt
 
 class Picture():
 
@@ -17,68 +14,7 @@ class Picture():
             self.__width = len(data[0])
 
         self.__image = None
-        self.__side = 300
-
-    def imageSegmentation(self):
-        
-        gray = cv.cvtColor(self.__data.astype("uint8"), cv.COLOR_RGB2GRAY)
-        gray = cv.GaussianBlur(gray, (3,3), 0, 0, cv.BORDER_DEFAULT)
-
-        dft = cv.dft(np.float32(gray),flags = cv.DFT_COMPLEX_OUTPUT)
-
-        dft_shift = np.fft.fftshift(dft)
-        #dft_shift = cv2.GaussianBlur(dft_shift, (3, 1), 7)
-
-
-        magnitude_spectrum = 20*np.log(cv.magnitude(dft_shift[:,:,0],dft_shift[:,:,1]))
-
-
-        rows, cols = gray.shape
-        crow,ccol = int(rows/2) , int(cols/2)
-        # create a mask first, center square is 1, remaining all zeros
-        mask = np.zeros((rows,cols,2),np.uint8)
-
-        r_out = 180
-        r_in = 25
-
-        x, y = np.ogrid[:rows, :cols]
-        mask_area = np.logical_and(((x - crow) ** 2 + (y - ccol) ** 2 >= r_in ** 2), ((x - crow) ** 2 + (y - ccol) ** 2 <= r_out ** 2))
-        mask[mask_area] = 1
-        #
-
-
-        # apply mask and inverse DFT
-        fshift = dft_shift*mask
-
-        fshift_mask_mag = 20*np.log(cv.magnitude(fshift[:,:,0],fshift[:,:,1]))
-
-        f_ishift = np.fft.ifftshift(fshift)
-        img_back = cv.idft(f_ishift,flags = cv.DFT_COMPLEX_OUTPUT)
-        img_back = cv.magnitude(img_back[:,:,0],img_back[:,:,1])
-
-        return self.__convertTo255(img_back)
-
-    def __convertTo255(self, img, magnitude=1e6):
-
-        maxi = -1
-
-        len_x = len(img)
-        len_y = len(img[0])
-
-        for i in range(len_x):
-            for j in range(len_y):
-                if maxi == -1:
-                    maxi = img[i][j]
-                maxi = max(maxi, img[i][j])
-        
-        mini = magnitude
-        maxi = maxi - mini
-        for i in range(len_x):
-            for j in range(len_y):
-                img[i][j] = max(img[i][j] - mini,0)
-                img[i][j] = min(((img[i][j]/maxi) * 255),255)
-        
-        return img.astype("uint8")         
+        self.__side = 300        
         
     def drawSquare(self, side=300):
 

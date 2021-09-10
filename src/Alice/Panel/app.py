@@ -1,5 +1,4 @@
 import tkinter as tk
-import time
 
 class App(tk.Tk):
 
